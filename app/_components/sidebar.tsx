@@ -1,5 +1,5 @@
-import { LayoutGridIcon, PackageIcon, ShoppingBasketIcon } from 'lucide-react';
-import SidebarButton from "./sidebar-button";
+import { LayoutGridIcon, PackageIcon, ShoppingBasketIcon } from "lucide-react";
+import SidebarButton from "./sidebar-buttton";
 
 const Sidebar = () => {
   return (
