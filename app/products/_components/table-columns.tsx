@@ -24,6 +24,9 @@ import {
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
 import DeleteProductAlertDialogContent from "./delete-dialog-content";
+import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
+import UpsertProductDialogContent from "./upsert-dialog-content";
+import { useState } from "react";
 
 const getStatusLabel = (status: string) => {
   if (status === "IN_STOCK") {
@@ -69,9 +72,11 @@ export const productTableColumns: ColumnDef<Product>[] = [
     accessorKey: "actions",
     header: "Ações",
     cell: (row) => {
+      const [editDialogOpen, setEditDialogOpen] = useState(false);
       const product = row.row.original;
       return (
         <AlertDialog>
+          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost">
@@ -88,10 +93,12 @@ export const productTableColumns: ColumnDef<Product>[] = [
                 <ClipboardIcon size={16} />
                 Copiar ID
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-1.5">
+              <DialogTrigger asChild>
+                <DropdownMenuItem className="gap-1.5">
                 <EditIcon size={16} />
                 Editar
               </DropdownMenuItem>
+              </DialogTrigger>
 
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem className="gap-1.5">
@@ -101,7 +108,16 @@ export const productTableColumns: ColumnDef<Product>[] = [
               </AlertDialogTrigger>
             </DropdownMenuContent>
           </DropdownMenu>
+          <UpsertProductDialogContent defaultValues={{
+            id: product.id,
+            name: product.name,
+            price: Number(product.price),
+            stock: product.stock,
+          }}
+            onSuccess={() => setEditDialogOpen(false)}
+          />
           <DeleteProductAlertDialogContent productId={product.id} />
+          </Dialog>
         </AlertDialog>
       );
     },
