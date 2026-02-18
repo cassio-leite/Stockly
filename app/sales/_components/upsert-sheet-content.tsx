@@ -30,7 +30,7 @@ import {
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product } from "@prisma/client";
-import {  PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -82,6 +82,19 @@ const UpsertSheetContent = ({
         (product) => product.id === selectedProduct.id,
       );
       if (existingProduct) {
+        const productIsOutOfStock =
+          existingProduct.quantity + data.quantity > selectedProduct.stock;
+        if (productIsOutOfStock) {
+          form.setError("quantity", {
+            message:
+              "Quantidade indisponível em estoque. Estoque atual: " +
+              selectedProduct.stock,
+          });
+
+          return currentProducts;
+        }
+        form.reset();
+
         return currentProducts.map((products) => {
           if (products.id === selectedProduct.id) {
             return {
@@ -90,14 +103,27 @@ const UpsertSheetContent = ({
             };
           }
           return products;
-        })
-      };
+        });
+      }
+      const productIsOutOfStock = data.quantity > selectedProduct.stock;
+      if (productIsOutOfStock) {
+        form.setError("quantity", {
+          message:
+            "Quantidade indisponível em estoque. Estoque atual: " +
+            selectedProduct.stock,
+        });
+        return currentProducts;
+      }
+      form.reset();
       return [
         ...currentProducts,
-        { ...selectedProduct, price: Number(selectedProduct.price), quantity: data.quantity },
+        {
+          ...selectedProduct,
+          price: Number(selectedProduct.price),
+          quantity: data.quantity,
+        },
       ];
     });
-    form.reset();
   };
   const productsTotal = useMemo(() => {
     return selectedProducts.reduce((acc, product) => {
@@ -109,7 +135,7 @@ const UpsertSheetContent = ({
     setSelectedProducts((currentProducts) => {
       return currentProducts.filter((product) => product.id !== productId);
     });
-  }
+  };
 
   return (
     <SheetContent className="!max-w-[700px]">
