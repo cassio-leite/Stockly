@@ -14,7 +14,7 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { Product } from "@prisma/client";
 import {
-  ClipboardIcon,
+  ClipboardCopyIcon,
   EditIcon,
   MoreHorizontalIcon,
   TrashIcon,
@@ -25,9 +25,11 @@ import DeleteProductAlertDialogContent from "./delete-dialog-content";
 
 interface ProductTableDropdownMenuProps {
   product: Product;
+  onDelete: (product: string) => void;
 }
 
 const ProductTableDropdownMenu = ({
+  onDelete,
   product,
 }: ProductTableDropdownMenuProps) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -47,7 +49,7 @@ const ProductTableDropdownMenu = ({
               className="gap-1.5"
               onClick={() => navigator.clipboard.writeText(product.id)}
             >
-              <ClipboardIcon size={16} />
+              <ClipboardCopyIcon size={16} />
               Copiar ID
             </DropdownMenuItem>
             <DialogTrigger asChild>
@@ -58,7 +60,10 @@ const ProductTableDropdownMenu = ({
             </DialogTrigger>
 
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="gap-1.5">
+              <DropdownMenuItem
+                className="gap-1.5"
+                onClick={() => onDelete(product.id)}
+              >
                 <TrashIcon size={16} />
                 Deletar
               </DropdownMenuItem>
