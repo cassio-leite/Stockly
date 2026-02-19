@@ -6,7 +6,8 @@ import { revalidatePath } from "next/cache";
 
 export const createSale = async (data: CreateSaleSchema) => {
   createSaleSchema.parse(data);
-  const sale = await db.sale.create({
+  await db.$transaction(async (trx) => {
+     const sale = await trx.sale.create({
     data: {
       date: new Date(),
     },
@@ -26,7 +27,7 @@ export const createSale = async (data: CreateSaleSchema) => {
     if (productIsOutOfStock) {
       throw new Error("Produto não encontrado");
     }
-    await db.saleProduct.create({
+    await trx.saleProduct.create({
       data: {
         saleId: sale.id,
         productId: product.id,
@@ -34,7 +35,7 @@ export const createSale = async (data: CreateSaleSchema) => {
         unitPrice: productFromDb.price,
       },
     });
-    await db.product.update({
+    await trx.product.update({
       where: {
         id: product.id,
         },
@@ -45,5 +46,7 @@ export const createSale = async (data: CreateSaleSchema) => {
         },
     });
   }
+  });
+ 
   revalidatePath("/products");
 };
