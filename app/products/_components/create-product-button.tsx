@@ -10,19 +10,19 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 const CreateProductButton = () => {
-const [dialogOpen, setDialogOpen] = useState(false);
+const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
 
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="gap-2">
           <PlusIcon size={20} />
           Novo Produto
         </Button>
       </DialogTrigger>
-      <UpsertProductDialogContent onSuccess={() => setDialogOpen(false)} />
+      <UpsertProductDialogContent setDialogIsOpen={setDialogIsOpen} />
     </Dialog>
   );
 };
