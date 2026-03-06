@@ -27,10 +27,10 @@ const RevenueChart = ({ data }: RevenueChartProps) => {
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="day"
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
+            dataKey="day"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <Bar dataKey="totalRevenue" radius={4} />
