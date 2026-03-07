@@ -19,10 +19,12 @@ import { getDashboard } from "../_data-access/dashboard/get-dashboard";
 import { formatCurrency } from "../_helpers/currency";
 import RevenueChart from "./_components/revenue-chart";
 import MostSoldProductItem from "./_components/most-sold-product-item";
+import TotalRevenueCard from "./_components/total-revenue-card";
+import { Suspense } from "react";
+import { Skeleton } from "../_components/ui/skeleton";
 
 const Home = async () => {
   const {
-    totalRevenue,
     todayRevenue,
     totalSales,
     totalStock,
@@ -40,13 +42,9 @@ const Home = async () => {
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
-        <SummaryCard>
-          <SummaryCardIcon>
-            <DollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Receita Total</SummaryCardTitle>
-          <SummaryCardValue>{formatCurrency(totalRevenue)}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense fallback={<Skeleton className="bg-white rounded-xl"/>}>
+          <TotalRevenueCard />
+        </Suspense>
 
         <SummaryCard>
           <SummaryCardIcon>
@@ -56,6 +54,7 @@ const Home = async () => {
           <SummaryCardValue>{formatCurrency(todayRevenue)}</SummaryCardValue>
         </SummaryCard>
       </div>
+
       <div className="grid grid-cols-3 gap-6">
         <SummaryCard>
           <SummaryCardIcon>
@@ -65,6 +64,7 @@ const Home = async () => {
           <SummaryCardValue>{totalSales}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
+
           <SummaryCardIcon>
             <PackageIcon />
           </SummaryCardIcon>
@@ -72,6 +72,7 @@ const Home = async () => {
           <SummaryCardValue>{totalStock}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
+
           <SummaryCardIcon>
             <ShoppingBasketIcon />
           </SummaryCardIcon>
