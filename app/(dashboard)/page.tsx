@@ -1,6 +1,5 @@
 import {
   CircleDollarSign,
-  DollarSign,
   PackageIcon,
   ShoppingBasketIcon,
 } from "lucide-react";
@@ -12,20 +11,19 @@ import Header, {
 import {
   SummaryCard,
   SummaryCardIcon,
+  SummaryCardSkeleton,
   SummaryCardTitle,
   SummaryCardValue,
 } from "./_components/summary-card";
 import { getDashboard } from "../_data-access/dashboard/get-dashboard";
-import { formatCurrency } from "../_helpers/currency";
 import RevenueChart from "./_components/revenue-chart";
 import MostSoldProductItem from "./_components/most-sold-product-item";
 import TotalRevenueCard from "./_components/total-revenue-card";
 import { Suspense } from "react";
-import { Skeleton } from "../_components/ui/skeleton";
+import TodayRevenueCard from "./_components/today-revenue-card";
 
 const Home = async () => {
   const {
-    todayRevenue,
     totalSales,
     totalStock,
     totalProducts,
@@ -42,17 +40,13 @@ const Home = async () => {
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
-        <Suspense fallback={<Skeleton className="bg-white rounded-xl"/>}>
+        <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalRevenueCard />
         </Suspense>
 
-        <SummaryCard>
-          <SummaryCardIcon>
-            <DollarSign />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Receita Hoje</SummaryCardTitle>
-          <SummaryCardValue>{formatCurrency(todayRevenue)}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense fallback={<SummaryCardSkeleton />}>
+          <TodayRevenueCard />
+        </Suspense>
       </div>
 
       <div className="grid grid-cols-3 gap-6">
@@ -64,7 +58,6 @@ const Home = async () => {
           <SummaryCardValue>{totalSales}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
-
           <SummaryCardIcon>
             <PackageIcon />
           </SummaryCardIcon>
@@ -72,7 +65,6 @@ const Home = async () => {
           <SummaryCardValue>{totalStock}</SummaryCardValue>
         </SummaryCard>
         <SummaryCard>
-
           <SummaryCardIcon>
             <ShoppingBasketIcon />
           </SummaryCardIcon>
