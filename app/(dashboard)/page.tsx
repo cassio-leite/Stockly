@@ -1,5 +1,4 @@
 import {
-  ShoppingBasketIcon,
 } from "lucide-react";
 import Header, {
   HeaderLeft,
@@ -7,11 +6,7 @@ import Header, {
   HeaderTitle,
 } from "../_components/header";
 import {
-  SummaryCard,
-  SummaryCardIcon,
   SummaryCardSkeleton,
-  SummaryCardTitle,
-  SummaryCardValue,
 } from "./_components/summary-card";
 import { getDashboard } from "../_data-access/dashboard/get-dashboard";
 import RevenueChart from "./_components/revenue-chart";
@@ -21,10 +16,10 @@ import { Suspense } from "react";
 import TodayRevenueCard from "./_components/today-revenue-card";
 import TotalSalesCard from "./_components/total-sales-card";
 import TotalInStockCard from "./_components/total-in-stock-card";
+import TotalProductsCard from "./_components/total-products-card";
 
 const Home = async () => {
   const {
-    totalProducts,
     totalLast14DaysRevenue,
     mostSoldProducts,
   } = await getDashboard();
@@ -36,36 +31,25 @@ const Home = async () => {
           <HeaderTitle>Dashboard</HeaderTitle>
         </HeaderLeft>
       </Header>
-
       <div className="grid grid-cols-2 gap-6">
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalRevenueCard />
         </Suspense>
-
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TodayRevenueCard />
         </Suspense>
       </div>
-
       <div className="grid grid-cols-3 gap-6">
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalSalesCard />
         </Suspense>
-
         <Suspense fallback={<SummaryCardSkeleton />}>
           <TotalInStockCard />
         </Suspense>
-
-        
-        <SummaryCard>
-          <SummaryCardIcon>
-            <ShoppingBasketIcon />
-          </SummaryCardIcon>
-          <SummaryCardTitle>Produtos</SummaryCardTitle>
-          <SummaryCardValue>{totalProducts}</SummaryCardValue>
-        </SummaryCard>
+        <Suspense fallback={<SummaryCardSkeleton />}>
+          <TotalProductsCard />
+        </Suspense>
       </div>
-
       <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
         <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
           <p className="text-lg font-semibold text-slate-900">Receita</p>
