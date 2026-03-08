@@ -33,35 +33,38 @@ import { toast } from "sonner";
 
 interface UpsertProductDialogContentProps {
   defaultValues?: UpsertProductSchema;
-  setDialogIsOpen: Dispatch<SetStateAction<boolean>>
+  setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const UpsertProductDialogContent = ({
   defaultValues,
   setDialogIsOpen,
 }: UpsertProductDialogContentProps) => {
-  const {execute: executeUpsertProduct} = useAction(upsertProduct, {
+  const { execute: executeUpsertProduct } = useAction(upsertProduct, {
     onSuccess: () => {
       toast.success("Produto salvo com sucesso.");
       setDialogIsOpen(false);
     },
     onError: () => {
-        toast.error("Erro ao salvar produto.")},
-  })
+      toast.error("Erro ao salvar produto.");
+    },
+  });
   const form = useForm<UpsertProductSchema>({
     shouldUnregister: true,
     resolver: zodResolver(upsertProductSchema),
-    defaultValues: defaultValues ?? {
-      name: "",
-      price: 0,
-      stock: 1,
-    },
+    defaultValues:
+      defaultValues ??
+      ({
+        name: "",
+        price: 0,
+        stock: 1,
+      } satisfies UpsertProductSchema),
   });
 
   const onSubmit = (data: UpsertProductSchema) => {
     executeUpsertProduct({
-        ...data,
-        id: defaultValues?.id,
+      ...data,
+      id: defaultValues?.id,
     });
   };
 
