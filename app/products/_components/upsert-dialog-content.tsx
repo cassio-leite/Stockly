@@ -49,16 +49,17 @@ const UpsertProductDialogContent = ({
       toast.error("Erro ao salvar produto.");
     },
   });
+
+  const formDefaultValues: UpsertProductSchema = defaultValues ?? {
+    name: "",
+    price: 0,
+    stock: 1,
+  };
+
   const form = useForm<UpsertProductSchema>({
     shouldUnregister: true,
     resolver: zodResolver(upsertProductSchema),
-    defaultValues:
-      defaultValues ??
-      {
-        name: "",
-        price: 0,
-        stock: 1,
-      },
+    defaultValues: formDefaultValues,
   });
 
   const onSubmit = (data: UpsertProductSchema) => {
