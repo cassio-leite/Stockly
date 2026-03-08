@@ -45,7 +45,7 @@ const formSchema = z.object({
   productId: z.string().uuid({
     message: "O produto é obrigatório.",
   }),
-  quantity: z.coerce.number().int().positive(),
+  quantity: z.number().int().positive(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -215,6 +215,7 @@ const UpsertSheetContent = ({
                     type="number"
                     {...field}
                     placeholder="Digite a quantidade"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
