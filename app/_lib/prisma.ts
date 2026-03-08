@@ -1,20 +1,17 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
 import { PrismaClient } from "@prisma/client";
 
 declare global {
-  var cachedPrisma: ReturnType<typeof createPrismaClient>;
+  var cachedPrisma: PrismaClient | undefined;
 }
 
-const createPrismaClient = () => {
-  return new PrismaClient();
-};
+let prisma: PrismaClient;
 
-let prisma: ReturnType<typeof createPrismaClient>;
 if (process.env.NODE_ENV === "production") {
-  prisma = createPrismaClient();
+  prisma = new PrismaClient();
 } else {
   if (!global.cachedPrisma) {
-    global.cachedPrisma = createPrismaClient();
+    global.cachedPrisma = new PrismaClient();
   }
   prisma = global.cachedPrisma;
 }
