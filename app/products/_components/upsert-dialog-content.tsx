@@ -54,11 +54,11 @@ const UpsertProductDialogContent = ({
     resolver: zodResolver(upsertProductSchema),
     defaultValues:
       defaultValues ??
-      ({
+      {
         name: "",
         price: 0,
         stock: 1,
-      } satisfies UpsertProductSchema),
+      },
   });
 
   const onSubmit = (data: UpsertProductSchema) => {
